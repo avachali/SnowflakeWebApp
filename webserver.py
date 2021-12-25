@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from snowflake import connector
 import pandas as pd
 
@@ -13,6 +13,15 @@ def homepage():
 @app.route('/submit')
 def submitpage():
     return render_template('submit.html')
+
+@app.route('/thanks4submit', methods=["POST"])
+def thankspage():
+    colorName = request.form.get("cname")
+    userName = request.form.get("uname")
+    return render_template('thanks4submit.html',
+                           colorName=colorName,
+                           userName=userName)
+
 
 #Snowflake stuff  - get sensitive deets from env variable
 cnx = connector.connect(
