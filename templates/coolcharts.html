@@ -16,7 +16,7 @@
     </style>
   </head>
   <body>
-    <h1>The most popular colors</h1>
+    <h1> RS68740 Popular Colors</h1>
     <!-- Container for the visualization -->
     <div id="vis"></div>
 
@@ -25,12 +25,13 @@
       var vlSpec = {
                   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
                   "data": {
-                    "values":[{"color":"Indigo","votes":94},{"color":"Red","votes":70},{"color":"Yellow","votes":59},{"color":"Aquamarine","votes":59},{"color":"Violet","votes":58},{"color":"Orange","votes":55},{"color":"Fuchsia","votes":54},{"color":"Blue","votes":52},{"color":"Olive","votes":52},{"color":"Pink","votes":51},{"color":"Plum","votes":51},{"color":"Teal","votes":51},{"color":"Green","votes":50},{"color":"Khaki","votes":50},{"color":"Coral","votes":50},{"color":"Goldenrod","votes":48},{"color":"Turquoise","votes":46},{"color":"Maroon","votes":45},{"color":"Neww","votes":2},{"color":"Beige","votes":1},{"color":"Honeydew","votes":1},{"color":"Mint Green","votes":1},{"color":"olive","votes":1},{"color":"Sienna","votes":1}]
+                    "values": {{data4chartsJSON | safe}}
                   },
-                  "mark": "point",
+                  "mark": "bar",
                   "encoding": {
                     "x":{"field":"votes", "type":"quantitative"},
-                    "y":{"field":"color", "type": "nominal"}
+                    "y":{"field":"color", "type": "nominal"},
+                    "color": {"field":"color", "type":"nominal", "scale":null}
                   }
                 };
 

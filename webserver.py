@@ -9,6 +9,7 @@ app = Flask("Snowflake colors")
 @app.route('/')
 def homepage():
 
+    #Get data from color table
     cur = cnx.cursor().execute("select color_name, count(*) "
                                 "from demo_db.public.colors "
                                 "group by color_name "
@@ -40,15 +41,20 @@ def thankspage():
 
 @app.route('/coolcharts')
 def coolcharts():
+
+    # Get account Name
+    cur = cnx.cursor().execute("select current_account()")
+    accntName = cur.fetchone()
+
     cur = cnx.cursor().execute("select color_name, count(*) "
                                "from demo_db.public.colors "
                                "group by color_name "
                                "order by count(*) desc ;")
 
     data4charts = pd.DataFrame(cur.fetchall(), columns=['color', 'votes'])
-    data4charts.to_csv('data4charts.csv', index=False)
-    data4chartsJSON = data4charts.to_json("data4chartsJSON.json", orient='records')
-    return render_template('coolcharts.html')
+
+    data4chartsJSON = data4charts.to_json(orient='records')
+    return render_template('coolcharts.html', data4chartsJSON=data4chartsJSON, accntName=accntName)
 
 # SF connect
 cnx = sfConnect()
