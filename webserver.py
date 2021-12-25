@@ -18,6 +18,10 @@ def submitpage():
 def thankspage():
     colorName = request.form.get("cname")
     userName = request.form.get("uname")
+    #insert into db
+    cnx.cursor().execute("INSERT INTO COLORS(COLOR_UID, COLOR_NAME) " +
+                         "SELECT COLOR_UID_SEQ.nextval, '" + colorName + "'")
+
     return render_template('thanks4submit.html',
                            colorName=colorName,
                            userName=userName)
