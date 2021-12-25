@@ -7,7 +7,12 @@ app = Flask("my website")
 
 @app.route('/')
 def homepage():
-    return render_template('index.html')
+    # send dataframe html to template
+    return render_template('index.html', dfhtml=dfhtml)
+
+@app.route('/submit')
+def submitpage():
+    return render_template('submit.html')
 
 #Snowflake stuff  - get sensitive deets from env variable
 cnx = connector.connect(
