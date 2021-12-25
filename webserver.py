@@ -1,12 +1,23 @@
-import os
+#Imports
 from flask import Flask, render_template, request
-from snowflake import connector
 import pandas as pd
+from snowflakeConnection import sfConnect
 
-app = Flask("my website")
+app = Flask("Snowflake colors")
 
+#Routes
 @app.route('/')
 def homepage():
+
+    cur = cnx.cursor().execute("select color_name, count(*) "
+                                "from demo_db.public.colors "
+                                "group by color_name "
+                                "order by count(*) desc ;")
+
+    rows = pd.DataFrame(cur.fetchall(), columns=['COLOR_NAME', 'Votes'])
+
+    # dataframe as html
+    dfhtml = rows.to_html(index=False)
     # send dataframe html to template
     return render_template('index.html', dfhtml=dfhtml)
 
@@ -26,24 +37,18 @@ def thankspage():
                            colorName=colorName,
                            userName=userName)
 
+@app.route('/coolcharts')
+def coolcharts():
+    cur = cnx.cursor().execute("select color_name, count(*) "
+                               "from demo_db.public.colors "
+                               "group by color_name "
+                               "order by count(*) desc ;")
 
-#Snowflake stuff  - get sensitive deets from env variable
-cnx = connector.connect(
-    account = os.getenv('SF_GCP_ACCNT'),
-    user = os.getenv('SF_GCP_USR'),
-    password = os.getenv('SF_GCP_PWD'),
-    warehouse ='compute_wh',
-    database='demo_db',
-    schema='public',
-    role='sysadmin'
-)
+    data4charts = pd.DataFrame(cur.fetchall(), columns=['color', 'votes'])
+    data4charts.to_csv('data4charts.csv', index=False)
+    return render_template('coolcharts.html')
 
-cur = cnx.cursor()
-cur.execute("SELECT * from COLORS")
-
-rows=pd.DataFrame(cur.fetchall(), columns=['COLOR_UID','COLOR_NAME'])
-
-# dataframe as html
-dfhtml=rows.to_html()
+# SF connect
+cnx = sfConnect()
 
 app.run()
