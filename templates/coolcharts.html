@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cool Charts</title>
-</head>
-<body>
-<h1> These charts are uber cool!</h1>
-</body>
+<html>
+  <head>
+    <title>Cool color charts</title>
+    <meta charset="utf-8" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.21.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.20.2"></script>
+
+    <style media="screen">
+      /* Add space between Vega-Embed links  */
+      .vega-actions a {
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>The most popular colors</h1>
+    <!-- Container for the visualization -->
+    <div id="vis"></div>
+
+    <script>
+      // Assign the specification to a local variable vlSpec.
+      var vlSpec = {
+                  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                  "data": {
+                    "values":[{"color":"Indigo","votes":94},{"color":"Red","votes":70},{"color":"Yellow","votes":59},{"color":"Aquamarine","votes":59},{"color":"Violet","votes":58},{"color":"Orange","votes":55},{"color":"Fuchsia","votes":54},{"color":"Blue","votes":52},{"color":"Olive","votes":52},{"color":"Pink","votes":51},{"color":"Plum","votes":51},{"color":"Teal","votes":51},{"color":"Green","votes":50},{"color":"Khaki","votes":50},{"color":"Coral","votes":50},{"color":"Goldenrod","votes":48},{"color":"Turquoise","votes":46},{"color":"Maroon","votes":45},{"color":"Neww","votes":2},{"color":"Beige","votes":1},{"color":"Honeydew","votes":1},{"color":"Mint Green","votes":1},{"color":"olive","votes":1},{"color":"Sienna","votes":1}]
+                  },
+                  "mark": "point",
+                  "encoding": {
+                    "x":{"field":"votes", "type":"quantitative"},
+                    "y":{"field":"color", "type": "nominal"}
+                  }
+                };
+
+      // Embed the visualization in the container with id `vis`
+      vegaEmbed('#vis', vlSpec);
+    </script>
+  </body>
 </html>

@@ -12,6 +12,7 @@ def homepage():
     cur = cnx.cursor().execute("select color_name, count(*) "
                                 "from demo_db.public.colors "
                                 "group by color_name "
+                                "having count(*)>50 "
                                 "order by count(*) desc ;")
 
     rows = pd.DataFrame(cur.fetchall(), columns=['COLOR_NAME', 'Votes'])
@@ -46,6 +47,7 @@ def coolcharts():
 
     data4charts = pd.DataFrame(cur.fetchall(), columns=['color', 'votes'])
     data4charts.to_csv('data4charts.csv', index=False)
+    data4chartsJSON = data4charts.to_json("data4chartsJSON.json", orient='records')
     return render_template('coolcharts.html')
 
 # SF connect
